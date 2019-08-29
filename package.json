@@ -1,12 +1,13 @@
 {
-  "name": "react-list-select",
+  "name": "react-object-list-select",
   "version": "0.4.1",
   "license": "MIT",
   "description": "List with selectable and navigable items",
-  "author": "Navaru",
-  "repository": "hawkrives/react-list-select",
+  "author": "Saajan",
+  "repository": "saajan/react--object-list-select",
   "contributors": [
-    "Hawken Rives <hawkrives@gmail.com>"
+    "Hawken Rives <hawkrives@gmail.com>",
+    "Saajan <saajan.sn@gmail.com>"
   ],
   "keywords": [
     "react-component"

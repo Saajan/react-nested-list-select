@@ -1,14 +1,16 @@
-# react-list-select
+# react-object-list-select
 
 A list with selectable and keyboard navigable items. Useful as a dropdown (autocomplete), right click menu, or a simple list with actions triggered on item select.
 
-View the [example](https://hawkrives.github.io/react-list-select/).
+Fork of [link](https://github.com/hawkrives/react-list-select).
+
+View the [example](https://saajan.github.io/react-object-list-select/).
 
 
 ## Use:
 
 ```js
-import List from 'react-list-select'
+import List from 'react-object-list-select'
 
 let items = [
   'Google',
