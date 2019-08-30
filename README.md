@@ -6,19 +6,12 @@ Fork of [link](https://github.com/hawkrives/react-list-select).
 
 View the [example](https://saajan.github.io/react-object-list-select/).
 
-
 ## Use:
 
 ```js
-import List from 'react-object-list-select'
+import List from "react-object-list-select";
 
-let items = [
-  'Google',
-  'TED',
-  'GitHub',
-  'Big Think',
-  'Microsoft',
-]
+let items = ["Google", "TED", "GitHub", "Big Think", "Microsoft"];
 
 let list = (
   <List
@@ -26,55 +19,74 @@ let list = (
     selected={[0]}
     disabled={[4]}
     multiple={true}
-    onChange={(selected: number) => { console.log(selected) }}
+    onChange={(selected: number) => {
+      console.log(selected);
+    }}
   />
-)
+);
 
-ReactDOM.renderComponent(list, document.getElementById('container'))
+ReactDOM.renderComponent(list, document.getElementById("container"));
 ```
 
+Supports array of objects but the object should include keys 'id' and 'name';
+
+i.e
+
+```js
+let items = [
+  {
+    id: "google",
+    name: "Google"
+  },
+  {
+    id: "ted",
+    name: "TED"
+  }
+];
+```
 
 ## API
 
 #### .select(index)
-- `number` __index__ - _items_ array index
+
+- `number` **index** - _items_ array index
 
 Select an item from the list
 
-
 #### .deselect(index)
-- `number` __index__ - _items_ array index
+
+- `number` **index** - _items_ array index
 
 Deselect an item from the list
 
-
 #### .disable(index)
-- `number` __index__ - _items_ array index
+
+- `number` **index** - _items_ array index
 
 Disable an item from the list to be selected or focused
 
-
 #### .enable(index)
-- `number` __index__ - _items_ array index
+
+- `number` **index** - _items_ array index
 
 Enable a disabled item to be focused or selected
 
-
 #### .focusNext()
+
 focus next item from the list
 
-
 #### .focusPrevious()
+
 focus previous item from the list
 
-
 #### .focusIndex(index)
-- `number` __index__ - _items_ array index
+
+- `number` **index** - _items_ array index
 
 Focus an item from the list
 
 #### .clear()
-Reset list state
 
+Reset list state
 
 ## License - MIT

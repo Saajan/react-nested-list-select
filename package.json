@@ -1,5 +1,79 @@
 {
+  "name": "react-object-list-select",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "List with selectable and navigable items",
+  "author": "Saajan",
+  "repository": "saajan/react--object-list-select",
+  "contributors": [
+    "Hawken Rives <hawkrives@gmail.com>",
+    "Saajan <saajan.sn@gmail.com>"
+  ],
+  "keywords": [
+    "react-component"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist/",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "babel ./src --out-dir ./dist",
+    "deploy": "gh-pages-deploy",
+    "flow": "flow",
+    "lint": "eslint --cache *.js example/*.js",
+    "example": "watchify -t [babelify] -e example/index.js -o example/bundle.js",
+    "prepublishOnly": "npm run build",
+    "prettify": "prettier --write src/*.js example/*.{css,js}",
+    "post-deploy": "npm run clean"
+  },
+  "gh-pages-deploy": {
+    "staticpath": "example",
+    "prep": [
+      "example"
+    ],
+    "noprompt": true
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+      "@babel/preset-flow"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 4,
+    "useTabs": true,
+    "bracketSpacing": false,
+    "trailingComma": "all"
+  },
   "dependencies": {
-    "react-dom": "^16.2.0"
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.3",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
+    "eslint": "^6.2.2",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-flowtype": "^4.2.0",
+    "eslint-plugin-react": "^7.14.3",
+    "flow-bin": "^0.106.3",
+    "gh-pages-deploy": "^0.5.1",
+    "prettier": "^1.18.2",
+    "react": ">=16",
+    "watchify": "^3.11.1"
   }
 }
