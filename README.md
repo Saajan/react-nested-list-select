@@ -2,7 +2,7 @@
 
 A list with selectable and keyboard navigable items. Useful as a dropdown (autocomplete), right click menu, or a simple list with actions triggered on item select.
 
-Fork of [link](https://github.com/hawkrives/react-list-select).
+Fork of [react-list-select](https://github.com/hawkrives/react-list-select).
 
 View the [example](https://saajan.github.io/react-object-list-select/).
 
