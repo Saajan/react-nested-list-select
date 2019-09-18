@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import List from '../src/list'
@@ -89,6 +87,29 @@ let example5 = (
 		selected={[0]}
 		onChange={console.log.bind(console)}
 	/>
+);
+
+
+/*
+	EXAMPLE 6
+*/
+
+let items = [
+	{
+	  id: "google",
+	  value: "Google"
+	},
+	{
+	  id: "ted",
+	  value: "TED"
+	}
+  ];
+
+let example6 = (
+	<List items={items} selected={[3]} disabled={[0, 4, 6, 7, 9]} />
+)
+let example6multi = (
+	<List items={items} selected={[2, 4, 6]} multiple={true} />
 )
 
 let Demo = () => (
@@ -99,6 +120,8 @@ let Demo = () => (
 		<div className="context-menu">{example3}</div>
 		<div>{example4}</div>
 		<div>{example5}</div>
+		<div>{example6}</div>
+		<div>{example6multi}</div>
 	</div>
 )
 
@@ -106,3 +129,5 @@ let demo = document.getElementById('container')
 if (demo) {
 	ReactDOM.render(<Demo />, demo)
 }
+
+

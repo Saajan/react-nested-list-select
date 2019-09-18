@@ -1,5 +1,3 @@
-// @flow
-
 // Thanks to https://gist.github.com/DelvarWorld/3784055
 // for the inspiration for the shift-selection
 
@@ -12,36 +10,13 @@ import uniq from "lodash/uniq";
 import { KEYS, KEY } from "./keys";
 import { ListItem } from "./list-item";
 
-type Props = {
-  className?: string,
-  items:Array<any>,
-  selected: Array<number>,
-  disabled: Array<number>,
-  multiple: boolean,
-  onChange: (null | number | Array<number>) => any,
-  keyboardEvents: boolean
-};
-
-type State = {
-  items:Array<any>,
-  selectedItems: Array<number>,
-  disabledItems: Array<number>,
-  focusedIndex: null | number,
-  lastSelected: null | number
-};
-
-type SelectArgs = {
-  index: null | number,
-  contiguous: boolean
-};
-
-export default class List extends React.Component<Props, State> {
+export default class List extends React.Component {
   static defaultProps = {
     items: [],
     selected: [],
     disabled: [],
     multiple: false,
-    onChange: () => {},
+    onChange: () => { },
     keyboardEvents: true
   };
 
@@ -53,7 +28,7 @@ export default class List extends React.Component<Props, State> {
     lastSelected: null
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps) {
     this.setState(() => ({
       items: nextProps.items,
       selectedItems: nextProps.selected,
@@ -70,7 +45,7 @@ export default class List extends React.Component<Props, State> {
     }));
   };
 
-  select = ({ index, contiguous = false }: SelectArgs = {}) => {
+  select = ({ index, contiguous = false }) => {
     if (index === null) {
       return;
     }
@@ -106,7 +81,7 @@ export default class List extends React.Component<Props, State> {
     );
   };
 
-  deselect = ({ index, contiguous = false }: SelectArgs = {}) => {
+  deselect = ({ index, contiguous = false }) => {
     if (index === null) {
       return;
     }
@@ -138,7 +113,7 @@ export default class List extends React.Component<Props, State> {
     );
   };
 
-  disable = (index: number) => {
+  disable = (index) => {
     this.setState(({ disabledItems }) => {
       let indexOf = disabledItems.indexOf(index);
       return {
@@ -147,13 +122,13 @@ export default class List extends React.Component<Props, State> {
     });
   };
 
-  disable = (index: number) => {
+  disable = (index) => {
     this.setState(state => ({
       disabledItems: [...state.disabledItems, index]
     }));
   };
 
-  focusIndex = (index: null | number = null) => {
+  focusIndex = (index) => {
     this.setState(state => {
       if (index === null) {
         return {};
@@ -215,7 +190,7 @@ export default class List extends React.Component<Props, State> {
     });
   };
 
-  onKeyDown = (event: SyntheticKeyboardEvent<>) => {
+  onKeyDown = (event) => {
     let key = event.keyCode;
 
     if (key === KEY.UP || key === KEY.K) {
@@ -236,7 +211,7 @@ export default class List extends React.Component<Props, State> {
     }
   };
 
-  toggleSelect = (args: { contiguous: boolean, index: null | number }) => {
+  toggleSelect = (args) => {
     let { contiguous, index } = args;
     if (index === null) {
       return;
@@ -249,20 +224,14 @@ export default class List extends React.Component<Props, State> {
     }
   };
 
-  toggleKeyboardSelect = (args: {
-    event: SyntheticKeyboardEvent<>,
-    index: null | number
-  }) => {
+  toggleKeyboardSelect = (args) => {
     let { event, index } = args;
     event.preventDefault();
     let shift = event.shiftKey;
     this.toggleSelect({ contiguous: shift, index });
   };
 
-  toggleMouseSelect = (args: {
-    event: SyntheticMouseEvent<>,
-    index: number
-  }) => {
+  toggleMouseSelect = (args) => {
     let { event, index } = args;
     event.preventDefault();
     let shift = event.shiftKey;

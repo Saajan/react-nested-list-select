@@ -20,7 +20,6 @@
   "scripts": {
     "build": "babel ./src --out-dir ./dist",
     "deploy": "gh-pages-deploy",
-    "flow": "flow",
     "lint": "eslint --cache *.js example/*.js",
     "example": "watchify -t [babelify] -e example/index.js -o example/bundle.js",
     "prepublishOnly": "npm run build",
@@ -37,8 +36,7 @@
   "babel": {
     "presets": [
       "@babel/preset-env",
-      "@babel/preset-react",
-      "@babel/preset-flow"
+      "@babel/preset-react"
     ],
     "plugins": [
       "@babel/plugin-proposal-class-properties"
@@ -61,16 +59,13 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.3",
     "babelify": "^10.0.0",
     "browserify": "^16.5.0",
     "eslint": "^6.2.2",
     "eslint-config-prettier": "^6.1.0",
-    "eslint-plugin-flowtype": "^4.2.0",
     "eslint-plugin-react": "^7.14.3",
-    "flow-bin": "^0.106.3",
     "gh-pages-deploy": "^0.5.1",
     "prettier": "^1.18.2",
     "react": ">=16",

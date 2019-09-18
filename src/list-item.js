@@ -3,17 +3,8 @@
 import * as React from 'react'
 import cx from 'classnames'
 
-type Props = {
-	disabled: boolean,
-	selected: boolean,
-	focused: boolean,
-	onMouseOver: number => any,
-	children: React.Node,
-	index: number,
-	onChange: ({event: SyntheticMouseEvent<>, index: number}) => any,
-}
 
-export class ListItem extends React.Component<Props> {
+export class ListItem extends React.Component {
 	static defaultProps = {
 		disabled: false,
 		selected: false,
@@ -24,7 +15,7 @@ export class ListItem extends React.Component<Props> {
 		this.props.onMouseOver(this.props.index)
 	}
 
-	handleChange = (ev: SyntheticMouseEvent<>) => {
+	handleChange = (ev) => {
 		this.props.onChange({event: ev, index: this.props.index})
 	}
 
