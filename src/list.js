@@ -289,7 +289,7 @@ export default class List extends React.Component<Props, State> {
             onMouseOver={this.focusIndex}
             onChange={this.toggleMouseSelect}
           >
-            {itemContent.name}
+            {itemContent.name || itemContent.value}
           </ListItem>
         );
       } else {

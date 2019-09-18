@@ -28,7 +28,7 @@ let list = (
 ReactDOM.renderComponent(list, document.getElementById("container"));
 ```
 
-Supports array of objects but the object should include keys 'id' and 'name';
+Supports array of objects but the object should include keys 'id' and 'name' or 'value';
 
 i.e
 
