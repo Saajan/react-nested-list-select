@@ -33,3 +33,7 @@ export const Multiple = () => (
     <List items={e1items} selected={[2, 4, 6]} multiple={true}  />
 );
 
+export const Search = () => (
+    <List items={e1items} selected={[3]} search={true}/>
+);
+

@@ -16,12 +16,14 @@ export default class List extends React.Component {
     selected: [],
     disabled: [],
     multiple: false,
+    search: false,
     onChange: () => { },
     keyboardEvents: true
   };
 
   state = {
     items: this.props.items,
+    searchValue: "",
     selectedItems: this.props.selected,
     disabledItems: this.props.disabled,
     focusedIndex: null,
@@ -49,34 +51,23 @@ export default class List extends React.Component {
     if (index === null) {
       return;
     }
-
     if (includes(this.state.disabledItems, index)) {
       return;
     }
-
     this.setState(
       state => {
         let { multiple } = this.props;
         let { lastSelected } = state;
-        let selectedItems = multiple
-          ? [...state.selectedItems, index]
-          : [index];
-
+        let selectedItems = multiple ? [...state.selectedItems, index] : [index];
         if (contiguous && multiple && typeof lastSelected === "number") {
           let start = Math.min(lastSelected, index);
           let end = Math.max(lastSelected, index);
-
           selectedItems = uniq([...selectedItems, ...range(start, end + 1)]);
         }
-
         return { selectedItems, lastSelected: index };
       },
       () => {
-        this.props.onChange(
-          this.props.multiple
-            ? this.state.selectedItems
-            : this.state.lastSelected
-        );
+        this.props.onChange(this.props.multiple ? this.state.selectedItems : this.state.lastSelected);
       }
     );
   };
@@ -85,16 +76,13 @@ export default class List extends React.Component {
     if (index === null) {
       return;
     }
-
     this.setState(
       state => {
         let { multiple } = this.props;
         let { selectedItems, lastSelected } = state;
-
         if (contiguous && multiple && typeof lastSelected === "number") {
           let start = Math.min(lastSelected, index);
           let end = Math.max(lastSelected, index);
-
           let toDeselect = range(start, end + 1);
           selectedItems = reject(selectedItems, idx =>
             includes(toDeselect, idx)
@@ -102,7 +90,6 @@ export default class List extends React.Component {
         } else {
           selectedItems = reject(selectedItems, idx => idx === index);
         }
-
         return { selectedItems, lastSelected: index };
       },
       () => {
@@ -133,13 +120,10 @@ export default class List extends React.Component {
       if (index === null) {
         return {};
       }
-
       let { focusedIndex, disabledItems } = state;
-
       if (!includes(disabledItems, index) && typeof index === "number") {
         focusedIndex = index;
       }
-
       return { focusedIndex };
     });
   };
@@ -148,21 +132,18 @@ export default class List extends React.Component {
     this.setState(state => {
       let { focusedIndex, disabledItems } = state;
       let lastItem = state.items.length - 1;
-
       if (focusedIndex === null) {
         focusedIndex = lastItem;
       } else {
         // focus last item if reached the top of the list
         focusedIndex = focusedIndex <= 0 ? lastItem : focusedIndex - 1;
       }
-
       // skip disabled items
       if (disabledItems.length) {
         while (includes(disabledItems, focusedIndex)) {
           focusedIndex = focusedIndex <= 0 ? lastItem : focusedIndex - 1;
         }
       }
-
       return { focusedIndex };
     });
   };
@@ -171,39 +152,34 @@ export default class List extends React.Component {
     this.setState(state => {
       let { focusedIndex, disabledItems } = state;
       let lastItem = state.items.length - 1;
-
       if (focusedIndex === null) {
         focusedIndex = 0;
       } else {
         // focus first item if reached last item in the list
         focusedIndex = focusedIndex >= lastItem ? 0 : focusedIndex + 1;
       }
-
       // skip disabled items
       if (disabledItems.length) {
         while (includes(disabledItems, focusedIndex)) {
           focusedIndex = focusedIndex >= lastItem ? 0 : focusedIndex + 1;
         }
       }
-
       return { focusedIndex };
     });
   };
 
   onKeyDown = (event) => {
     let key = event.keyCode;
-
     if (key === KEY.UP || key === KEY.K) {
       this.focusPrevious();
     } else if (key === KEY.DOWN || key === KEY.J) {
       this.focusNext();
-    } else if (key === KEY.SPACE || key === KEY.ENTER) {
+    } else if (key === KEY.SPACE) {
       this.toggleKeyboardSelect({
         event,
         index: this.state.focusedIndex
       });
     }
-
     // prevent default behavior where in some situations pressing the
     // key up / down would scroll the browser window
     if (includes(KEYS, key)) {
@@ -216,13 +192,34 @@ export default class List extends React.Component {
     if (index === null) {
       return;
     }
-
     if (!includes(this.state.selectedItems, index)) {
       this.select({ index, contiguous });
     } else if (this.props.multiple) {
       this.deselect({ index, contiguous });
     }
   };
+
+  handleSearch = (e) => {
+    this.setState({ searchValue: e.target.value });
+  }
+
+  handleSearchKeyPress = (e) => {
+    if (e.keyCode == 13) {
+      let searchInput = this.state.searchValue.toLowerCase();
+      const searchResult = this.props.items.filter(value => value.split(' ').some(token => token.toLowerCase().startsWith(searchInput)));
+      this.setState({
+        items: searchResult
+      });
+    }
+  }
+
+  handleSearchReset = () => {
+    if (this.state.searchValue === "") {
+      this.setState({
+        items: this.props.items
+      });
+    }
+  }
 
   toggleKeyboardSelect = (args) => {
     let { event, index } = args;
@@ -239,15 +236,12 @@ export default class List extends React.Component {
   };
 
   render() {
-    let items = this.props.items.map((itemContent, index) => {
+    let { search } = this.props;
+    let filteredItems = this.state.items.map((itemContent, index) => {
       let disabled = includes(this.state.disabledItems, index);
       let selected = includes(this.state.selectedItems, index);
       let focused = this.state.focusedIndex === index;
-      if (
-        itemContent != null &&
-        itemContent.constructor.name === "Object" &&
-        !React.isValidElement(itemContent)
-      ) {
+      if (itemContent != null && itemContent.constructor.name === "Object" && !React.isValidElement(itemContent)) {
         return (
           <ListItem
             key={index}
@@ -278,13 +272,16 @@ export default class List extends React.Component {
       }
     });
 
+    let searchBox = (<li><input value={this.state.searchValue} placeholder="Search" onKeyDown={this.handleSearchKeyPress} onKeyUp={this.handleSearchReset} onChange={this.handleSearch} className="sn-list-search-box"></input></li>);
+
     return (
       <ul
         className={cx("react-list-select", this.props.className)}
         tabIndex={0}
         onKeyDown={this.props.keyboardEvents ? this.onKeyDown : undefined}
       >
-        {items}
+        {search ? searchBox : null}
+        {filteredItems}
       </ul>
     );
   }
