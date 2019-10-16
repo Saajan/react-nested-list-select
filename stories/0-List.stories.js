@@ -49,6 +49,10 @@ export const Search = () => (
 );
 
 
-export const ObjectSearch = () => (
+export const ArrayOfObjectsMultiple = () => (
+    <List items={objectData} selected={[2, 4, 6]} multiple={true}  />
+);
+
+export const ArrayOfObjectSearch = () => (
     <List items={objectData} selected={[3]} search={true}/>
 );
