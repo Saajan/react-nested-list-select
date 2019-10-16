@@ -206,7 +206,13 @@ export default class List extends React.Component {
   handleSearchKeyPress = (e) => {
     if (e.keyCode == 13) {
       let searchInput = this.state.searchValue.toLowerCase();
-      const searchResult = this.props.items.filter(value => value.split(' ').some(token => token.toLowerCase().startsWith(searchInput)));
+      const searchResult = this.props.items.filter(value => {
+        if (value != null && value.constructor.name === "Object" && !React.isValidElement(value)) {
+          return value.name.split(' ').some(token => token.toLowerCase().startsWith(searchInput));
+        } else {
+          return value.split(' ').some(token => token.toLowerCase().startsWith(searchInput));
+        }
+      });
       this.setState({
         items: searchResult
       });

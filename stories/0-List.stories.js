@@ -23,6 +23,17 @@ let hashmap = {
     MT: 'Montana ',
 }
 
+let objectData = [{
+    key:1,
+    name:"Bengaluru"
+},{
+    key:2,
+    name:"Chennai"
+},{
+    key:3,
+    name:"Mumbai"
+}]
+
 let e1items = values(hashmap);
 
 export const Simple = () => (
@@ -37,3 +48,7 @@ export const Search = () => (
     <List items={e1items} selected={[3]} search={true}/>
 );
 
+
+export const ObjectSearch = () => (
+    <List items={objectData} selected={[3]} search={true}/>
+);
