@@ -1,15 +1,15 @@
-# react-object-list-select
+# react-nesteds-list-select
 
 A list with selectable and keyboard navigable items. Useful as a dropdown (autocomplete), right click menu, or a simple list with actions triggered on item select.
 
 Fork of [react-list-select](https://github.com/hawkrives/react-list-select).
 
-View the [example](https://saajan.github.io/react-object-list-select/).
+View the [example](https://saajan.github.io/react-nested-list-select/).
 
 ## Use:
 
 ```js
-import List from "react-object-list-select";
+import List from "react-nested-list-select";
 
 let items = ["Google", "TED", "GitHub", "Big Think", "Microsoft"];
 
