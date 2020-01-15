@@ -14,6 +14,7 @@ export default class List extends React.Component {
   static defaultProps = {
     items: [],
     selected: [],
+    selectedItem: [],
     disabled: [],
     multiple: false,
     search: false,
@@ -24,7 +25,8 @@ export default class List extends React.Component {
   state = {
     items: this.props.items,
     searchValue: "",
-    selectedItems: this.props.selected,
+    selectedIndexes: this.props.selected,
+    selectedItems: this.props.selectedItem,
     disabledItems: this.props.disabled,
     focusedIndex: null,
     lastSelected: null
@@ -33,21 +35,24 @@ export default class List extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState(() => ({
       items: nextProps.items,
-      selectedItems: nextProps.selected,
+      selectedIndexes: nextProps.selected,
+      selectedItems: nextProps.selectedItem,
       disabledItems: nextProps.disabled
     }));
   }
 
   clear = () => {
     this.setState(() => ({
+      selectedIndexes: [],
       selectedItems: [],
       disabledItems: [],
       focusedIndex: null,
-      lastSelected: null
+      lastSelected: null,
+      lastSelectedItem: null
     }));
   };
 
-  select = ({ index, contiguous = false }) => {
+  select = ({ index, selectedItem, contiguous = false }) => {
     if (index === null) {
       return;
     }
@@ -57,44 +62,46 @@ export default class List extends React.Component {
     this.setState(
       state => {
         let { multiple } = this.props;
-        let { lastSelected } = state;
-        let selectedItems = multiple ? [...state.selectedItems, index] : [index];
+        let { lastSelected, lastSelectedItem } = state;
+        let selectedIndexes = multiple ? [...state.selectedIndexes, index] : [index];
+        let selectedItems = multiple ? [...state.selectedItems, selectedItem] : [selectedItem];
         if (contiguous && multiple && typeof lastSelected === "number") {
           let start = Math.min(lastSelected, index);
           let end = Math.max(lastSelected, index);
-          selectedItems = uniq([...selectedItems, ...range(start, end + 1)]);
+          selectedIndexes = uniq([...selectedIndexes, ...range(start, end + 1)]);
         }
-        return { selectedItems, lastSelected: index };
+        return { selectedIndexes, lastSelected: index, selectedItems, lastSelectedItem: lastSelectedItem };
       },
       () => {
-        this.props.onChange(this.props.multiple ? this.state.selectedItems : this.state.lastSelected);
+        this.props.onChange(this.props.multiple ? (this.state.selectedIndexes, this.state.selectedItems) : (this.state.lastSelected, this.state.lastSelectedItem));
       }
     );
   };
 
-  deselect = ({ index, contiguous = false }) => {
+  deselect = ({ index, selectedItem, contiguous = false }) => {
     if (index === null) {
       return;
     }
     this.setState(
       state => {
         let { multiple } = this.props;
-        let { selectedItems, lastSelected } = state;
+        let { selectedIndexes, selectedItems, lastSelected, lastSelectedItem } = state;
         if (contiguous && multiple && typeof lastSelected === "number") {
           let start = Math.min(lastSelected, index);
           let end = Math.max(lastSelected, index);
           let toDeselect = range(start, end + 1);
-          selectedItems = reject(selectedItems, idx =>
+          selectedIndexes = reject(selectedIndexes, idx =>
             includes(toDeselect, idx)
           );
         } else {
-          selectedItems = reject(selectedItems, idx => idx === index);
+          selectedIndexes = reject(selectedIndexes, idx => idx === index);
+          selectedItems = reject(selectedItems, item => item.key === selectedItem.key);
         }
-        return { selectedItems, lastSelected: index };
+        return { selectedIndexes, selectedItems, lastSelected: index, lastSelectedItem: lastSelectedItem };
       },
       () => {
         this.props.onChange(
-          this.props.multiple ? this.state.selectedItems : null
+          this.props.multiple ? (this.state.selectedIndexes, this.state.selectedItems) : (null, null)
         );
       }
     );
@@ -192,7 +199,7 @@ export default class List extends React.Component {
     if (index === null) {
       return;
     }
-    if (!includes(this.state.selectedItems, index)) {
+    if (!includes(this.state.selectedIndexes, index)) {
       this.select({ index, contiguous });
     } else if (this.props.multiple) {
       this.deselect({ index, contiguous });
@@ -245,13 +252,15 @@ export default class List extends React.Component {
     let { search } = this.props;
     let filteredItems = this.state.items.map((itemContent, index) => {
       let disabled = includes(this.state.disabledItems, index);
-      let selected = includes(this.state.selectedItems, index);
+      let selected = includes(this.state.selectedIndexes, index);
+      let selectedItem = itemContent;
       let focused = this.state.focusedIndex === index;
       if (itemContent != null && itemContent.constructor.name === "Object" && !React.isValidElement(itemContent)) {
         return (
           <ListItem
             key={index}
             index={index}
+            selectedItem={selectedItem}
             disabled={disabled}
             selected={selected}
             focused={focused}
@@ -268,6 +277,7 @@ export default class List extends React.Component {
             index={index}
             disabled={disabled}
             selected={selected}
+            selectedItem={selectedItem}
             focused={focused}
             onMouseOver={this.focusIndex}
             onChange={this.toggleMouseSelect}

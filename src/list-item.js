@@ -9,11 +9,11 @@ export class ListItem extends React.Component {
 	}
 
 	handleMouseOver = () => {
-		this.props.onMouseOver(this.props.index);
+		this.props.onMouseOver(this.props.index, this.props.selectedItem);
 	}
 
 	handleChange = (ev) => {
-		this.props.onChange({event: ev, index: this.props.index});
+		this.props.onChange({ event: ev, index: this.props.index, item: this.props.selectedItem });
 	}
 
 	render() {

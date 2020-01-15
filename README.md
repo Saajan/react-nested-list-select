@@ -2,6 +2,8 @@
 
 A list with selectable and keyboard navigable items. Useful as a dropdown (autocomplete), right click menu, or a simple list with actions triggered on item select.
 
+# WARNING : In major upgrade mode... multiple select is not working... Fork it to change or use old version.
+
 Fork of [react-list-select](https://github.com/hawkrives/react-list-select).
 
 View the [example](https://saajan.github.io/react-nested-list-select/).
